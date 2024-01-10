@@ -26,7 +26,7 @@ body {
   padding: 5px;
   color: #ffffff;
   background-color: #c70d0d;
-  display: block; /* SKRIJE MONSTERSTATS*/
+  display: none; /* SKRIJE MONSTERSTATS*/
 }
 .stat {
   padding-right: 10px;
