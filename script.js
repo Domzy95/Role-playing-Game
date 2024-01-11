@@ -18,7 +18,7 @@ const healthText = document.querySelector("#healthText");
 const goldText = document.querySelector("#goldText");
 const monsterStats = document.querySelector("#monsterStats");
 const monsterName = document.querySelector("#monsterName");
-
+const monsterHealthText = document.querySelector("#monsterHealth");
 // WEAPONS VARIABLE
 const weapons = [
   {
@@ -125,19 +125,12 @@ const locations = [
     text: "You find a secret game. Pick a number above. Ten numbers will be randomly chosen between 0 and 10. If the number you choose matches one of the random numbers, you win!",
   },
 ];
-const monsterHealthText = document.querySelector("#monsterHealth");
+
 // INITIALIZE BUTTONS // KO KLIKNEŠ DOLOČEN GUM SE IZVEDE DOLOČENA FUNKCIJA
 button1.onclick = goStore;
 button2.onclick = goCave;
 button3.onclick = fightDragon;
-// GO TO TOWN SQUARE GUMB IZVEDE FUNKCIJO UPORABI 1 ELEMENT LOCATIONS ARRAYA IN TO JE name:town square
-function goTown() {
-  update(locations[0]);
-}
-// KLIK NA GUMB GO TO STORE IZVEDE TO FUNKCIJO UPORABI 2 ELEMENT LOCATIONS ARRAYA IN TO JE name:store
-function goStore() {
-  update(locations[1]);
-}
+
 // INNER TEXT PRIKAZE BESEDILO KO KLIKNEŠ DOLOČEN GUMB, ONCLICK PA ZAŽENE FUNKCIJO IZ OBJECTA BUTTON FUNCTIONS
 function update(location) {
   monsterStats.style.display = "none";
@@ -148,6 +141,14 @@ function update(location) {
   button3.innerText = location["button text"][2];
   button3.onclick = location["button functions"][2];
   text.innerText = location.text;
+}
+// GO TO TOWN SQUARE GUMB IZVEDE FUNKCIJO UPORABI 1 ELEMENT LOCATIONS ARRAYA IN TO JE name:town square
+function goTown() {
+  update(locations[0]);
+}
+// KLIK NA GUMB GO TO STORE IZVEDE TO FUNKCIJO UPORABI 2 ELEMENT LOCATIONS ARRAYA IN TO JE name:store
+function goStore() {
+  update(locations[1]);
 }
 // IZVEDE FUNKCIJO UPDATE KO KLIKŠEN GO CAVE
 function goCave() {
@@ -223,7 +224,8 @@ function goFight() {
   update(locations[3]);
   monsterHealth = monsters[fighting].health; // UPDEJTA HEALTH POŠASTI V MONSTERS ARRAY
   monsterStats.style.display = "block"; //PRIKAŽE HEALTH DISPLAY IZ CSS SPREMENI DISPLAY IZ NONE V BLOCK!
-  monsterHealthText.innerText = monsterHealth[fighting].health; //PRIKAŽE HEALTH DOLOČENE POŠASTI S KATERO SE FIGHTAŠ
+  monsterName.innerText = monsters[fighting].name; //PRIKAŽE HEALTH DOLOČENE POŠASTI S KATERO SE FIGHTAŠ
+  monsterHealthText.innerText = monsterHealth;
 }
 
 // FUNCTION ATTACK
@@ -258,6 +260,9 @@ function getMonsterAttackValue(level) {
   const hit = level * 5 - Math.floor(Math.random() * xp); //This will set the monster's attack to five times their level minus a random number between 0 and the player's xp.
   console.log(hit);
   return hit > 0 ? hit : 0; //return hit to a ternary operator that returns hit if hit is greater than 0, or returns 0 if it is not.
+} // MONSTER HIT FUNCTION
+function isMonsterHit() {
+  return Math.random() > 0.2 || health < 20;
 }
 // FUNCTION DODGE
 function dodge() {
@@ -288,16 +293,10 @@ function restart() {
   currentWeapon = 0;
   inventory = ["stick"];
   goldText.innerText = gold;
-  healthText.innerText = healthText;
-  xpText.innerText = xpText;
+  healthText.innerText = health;
+  xpText.innerText = xp;
   goTown();
 }
-
-// MONSTER HIT FUNCTION
-function isMonsterHit() {
-  return Math.random() > 0.2 || health < 20;
-}
-
 //EASTER EGG FUNCTION
 
 function easterEgg() {
@@ -315,22 +314,22 @@ function pickEight() {
 function pick(guess) {
   const numbers = [];
   while (numbers.length < 10) {
-    numbers.push(Math.floor(Math.random() * 11)); //push a random number between 0 and 10 to the end of the numbers array.
-    text.innerText = "You picked " + guess + ". Here are the random numbers:\n";
-    for (let i = 0; i < 10; i++) {
-      text.innerText += numbers[i] + "\n"; // Add the number at index i of the numbers array
-      if (numbers.indexOf(guess) !== -1) {
-        text.innerText += "Right! You win 20 gold!";
-        gold += 20;
-        goldText.innerText = gold;
-      } else {
-        text.innerText += "Wrong! You lose 10 health!";
-        health -= 10;
-        healthText.innerText = health;
-        if (health <= 0) {
-          lose();
-        }
-      }
+    numbers.push(Math.floor(Math.random() * 11));
+  }
+  text.innerText = "You picked " + guess + ". Here are the random numbers:\n";
+  for (let i = 0; i < 10; i++) {
+    text.innerText += numbers[i] + "\n";
+  }
+  if (numbers.includes(guess)) {
+    text.innerText += "Right! You win 20 gold!";
+    gold += 20;
+    goldText.innerText = gold;
+  } else {
+    text.innerText += "Wrong! You lose 10 health!";
+    health -= 10;
+    healthText.innerText = health;
+    if (health <= 0) {
+      lose();
     }
   }
 }
