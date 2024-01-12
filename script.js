@@ -19,6 +19,13 @@ const goldText = document.querySelector("#goldText");
 const monsterStats = document.querySelector("#monsterStats");
 const monsterName = document.querySelector("#monsterName");
 const monsterHealthText = document.querySelector("#monsterHealth");
+// IMAGE ELEMENTS
+const caveImage = document.querySelector("#cave");
+const slimeImage = document.querySelector("#slime");
+const storeImage = document.querySelector("store");
+const squareImage = document.querySelector("square");
+const dragonImage = document.querySelector("dragon");
+const fangedBeastImage = document.querySelector("fangedbeast");
 // WEAPONS VARIABLE
 const weapons = [
   {
@@ -65,19 +72,18 @@ const locations = [
     name: "town square",
     "button text": ["Go to store", "Go to cave", "Fight dragon"],
     "button functions": [goStore, goCave, fightDragon],
-    text: (text.innerText =
-      'You are in the town square. You see a sign that says "Store".'),
+    text: 'You are in the town square. You see a sign that says "Store".',
   },
   {
     // GO STORE OBJECT
     name: "store",
     "button text": [
-      "Buy 10 health (10 gold)",
-      "Buy weapon (30 gold)",
+      "Buy 10 health ♥️ (10 🪙)",
+      "Buy weapon (30 🪙)",
       "Go to town square",
     ],
     "button functions": [buyHealth, buyWeapon, goTown],
-    text: (text.innerText = "You enter the store."),
+    text: "You enter the store.",
   },
   {
     //GO CAVE OBJECT
@@ -102,7 +108,7 @@ const locations = [
       "Go to town square",
     ],
     "button functions": [goTown, goTown, easterEgg],
-    text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.',
+    text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold 🪙.',
   },
   {
     //LOOSE OBJECT
@@ -144,14 +150,24 @@ function update(location) {
 }
 // GO TO TOWN SQUARE GUMB IZVEDE FUNKCIJO UPORABI 1 ELEMENT LOCATIONS ARRAYA IN TO JE name:town square
 function goTown() {
+  slime.style.display = "none";
+  cave.style.display = "none";
+  store.style.display = "none";
+  square.style.display = "block";
+  dragon.style.display = "none";
+  fangedbeast.style.display = "none";
   update(locations[0]);
 }
 // KLIK NA GUMB GO TO STORE IZVEDE TO FUNKCIJO UPORABI 2 ELEMENT LOCATIONS ARRAYA IN TO JE name:store
 function goStore() {
+  store.style.display = "block";
+  square.style.display = "none";
   update(locations[1]);
 }
 // IZVEDE FUNKCIJO UPDATE KO KLIKŠEN GO CAVE
 function goCave() {
+  cave.style.display = "block";
+  square.style.display = "none";
   update(locations[2]);
 }
 // IZVEDE FUNKCIJO BUYHEALTH GUMB
@@ -206,16 +222,22 @@ function sellWeapon() {
 }
 // FIGHT SLIME
 function fightSlime() {
+  cave.style.display = "none";
+  slime.style.display = "block";
   fighting = 0;
   goFight();
 }
 // FIGHT BEAST
 function fightBeast() {
+  fangedbeast.style.display = "block";
+  cave.style.display = "none";
   fighting = 1;
   goFight();
 }
 // FIGHT DRAGON
 function fightDragon() {
+  dragon.style.display = "block";
+  square.style.display = "none";
   fighting = 2;
   goFight();
 }
@@ -295,6 +317,7 @@ function restart() {
   goldText.innerText = gold;
   healthText.innerText = health;
   xpText.innerText = xp;
+  cave.style.display = "none";
   goTown();
 }
 //EASTER EGG FUNCTION
